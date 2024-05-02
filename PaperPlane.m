@@ -4,6 +4,7 @@
     
     clear;
     clc;
+    close all;
 
 	global CL CD S m g rho	
 	S		=	0.017;			% Reference Area, m^2
@@ -45,23 +46,23 @@
 	xo		=	[3*V;0;H;R];
 	[td,xd]	=	ode23('EqMotion',tspan,xo);
 	
-	figure
-	plot(xa(:,4),xa(:,3),xb(:,4),xb(:,3),xc(:,4),xc(:,3),xd(:,4),xd(:,3))
-	xlabel('Range, m'), ylabel('Height, m'), grid
-
-	figure
-	subplot(2,2,1)
-	plot(ta,xa(:,1),tb,xb(:,1),tc,xc(:,1),td,xd(:,1))
-	xlabel('Time, s'), ylabel('Velocity, m/s'), grid
-	subplot(2,2,2)
-	plot(ta,xa(:,2),tb,xb(:,2),tc,xc(:,2),td,xd(:,2))
-	xlabel('Time, s'), ylabel('Flight Path Angle, rad'), grid
-	subplot(2,2,3)
-	plot(ta,xa(:,3),tb,xb(:,3),tc,xc(:,3),td,xd(:,3))
-	xlabel('Time, s'), ylabel('Altitude, m'), grid
-	subplot(2,2,4)
-	plot(ta,xa(:,4),tb,xb(:,4),tc,xc(:,4),td,xd(:,4))
-	xlabel('Time, s'), ylabel('Range, m'), grid
+	% figure
+	% plot(xa(:,4),xa(:,3),xb(:,4),xb(:,3),xc(:,4),xc(:,3),xd(:,4),xd(:,3))
+	% xlabel('Range, m'), ylabel('Height, m'), grid
+    % 
+	% figure
+	% subplot(2,2,1)
+	% plot(ta,xa(:,1),tb,xb(:,1),tc,xc(:,1),td,xd(:,1))
+	% xlabel('Time, s'), ylabel('Velocity, m/s'), grid
+	% subplot(2,2,2)
+	% plot(ta,xa(:,2),tb,xb(:,2),tc,xc(:,2),td,xd(:,2))
+	% xlabel('Time, s'), ylabel('Flight Path Angle, rad'), grid
+	% subplot(2,2,3)
+	% plot(ta,xa(:,3),tb,xb(:,3),tc,xc(:,3),td,xd(:,3))
+	% xlabel('Time, s'), ylabel('Altitude, m'), grid
+	% subplot(2,2,4)
+	% plot(ta,xa(:,4),tb,xb(:,4),tc,xc(:,4),td,xd(:,4))
+	% xlabel('Time, s'), ylabel('Range, m'), grid
 
 
     %% Case A Variations
@@ -91,6 +92,7 @@
         xa_high_velo(:,3),'g',xa_nom_velo(:,4),xa_nom_velo(:,3),'k');
     xlabel('Range, m'), ylabel('Height, m'), grid
     title("Initial Velocity Variations");
+    legend('low', 'high', 'nominal');
 
     % Plot Flight Path Angle Variations
     
@@ -111,5 +113,38 @@
         xa_nom_flight_angle(:,4),xa_nom_flight_angle(:,3),'k');
     xlabel('Range, m'), ylabel('Height, m'), grid
     title("Initial Flight Path Angle Variations");
+    legend('low', 'high', 'nominal');
+
+    sgtitle('Case A Variations');
 
     %% Random Parameter Variations
+    
+    init_velo_range = [2, 7.5];
+    init_flight_path_ang_range = [-0.5, 0.4];
+    tspan_random = 0:0.1:6;
+
+    % Plot Random Variations
+
+    figure;
+    hold on;
+    xlabel('Range, m'), ylabel('Height, m'), grid
+    title('100 Random Parameter Variations')
+
+    for i = 1:100
+
+        random_velocity = init_velo_range(1) + (init_velo_range(2) - ...
+                            init_velo_range(1)) * rand(1);
+        random_flight_path_angle = init_flight_path_ang_range(1) + ...
+                                    (init_flight_path_ang_range(2) - ...
+                                    init_flight_path_ang_range(1)) * ...
+                                    rand(1);
+
+        xo_random = [random_velocity; random_flight_path_angle;H;R];
+        [ta_random, xa_random] = ode23('EqMotion', tspan_random, ...
+                                        xo_random);
+
+        plot(xa_random(:,4), xa_random(:,3), 'Color', [0.8500 0.3250 ...
+                                                              0.0980]);
+   
+    end
+    
