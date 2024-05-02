@@ -111,3 +111,5 @@
         xa_nom_flight_angle(:,4),xa_nom_flight_angle(:,3),'k');
     xlabel('Range, m'), ylabel('Height, m'), grid
     title("Initial Flight Path Angle Variations");
+
+    %% Random Parameter Variations
