@@ -1,6 +1,9 @@
 %   Example 1.3-1 Paper Airplane Flight Path
 %	Copyright 2005 by Robert Stengel
 %	August 23, 2005
+    
+    clear;
+    clc;
 
 	global CL CD S m g rho	
 	S		=	0.017;			% Reference Area, m^2
@@ -61,5 +64,50 @@
 	xlabel('Time, s'), ylabel('Range, m'), grid
 
 
-    %% Plot Case A Variations
+    %% Case A Variations
     
+    init_velo_low = 2;      % m/s
+    init_velo_high = 7.5;   % m/s
+    init_velo_nom = 3.55;   % m/s
+    
+    init_flight_path_ang_low = -0.5;    % rad
+    init_flight_path_ang_high = 0.4;    % rad
+    init_flight_path_ang_nom = -0.18;   % rad
+
+    % Plot Velocity Variations
+
+    xo_low = [init_velo_low;Gam;H;R];
+    xo_high = [init_velo_high;Gam;H;R];
+    xo_nom = [init_velo_nom;Gam;H;R];
+
+    [ta_low_velo, xa_low_velo] = ode23('EqMotion', tspan, xo_low);
+    [ta_high_velo, xa_high_velo] = ode23('EqMotion', tspan, xo_high);
+    [ta_nom_velo, xa_nom_velo] = ode23('EqMotion', tspan, xo_nom);
+    
+    figure;
+    subplot(2,1,1);
+    hold on;
+    plot(xa_low_velo(:,4),xa_low_velo(:,3),'r',xa_high_velo(:,4),...
+        xa_high_velo(:,3),'g',xa_nom_velo(:,4),xa_nom_velo(:,3),'k');
+    xlabel('Range, m'), ylabel('Height, m'), grid
+    title("Initial Velocity Variations");
+
+    % Plot Flight Path Angle Variations
+    
+    xo_low = [V;init_flight_path_ang_low;H;R];
+    xo_high = [V;init_flight_path_ang_high;H;R];
+    xo_nom = [V;init_flight_path_ang_nom;H;R];
+
+    [ta_low_flight_angle, xa_low_flight_angle] = ode23('EqMotion', ...
+                                                        tspan, xo_low);
+    [ta_high_flight_angle, xa_high_flight_angle] = ode23('EqMotion', ...
+                                                          tspan, xo_high);
+    [ta_nom_flight_angle, xa_nom_flight_angle] = ode23('EqMotion', ...
+                                                        tspan, xo_nom);
+    subplot(2,1,2);
+    hold on;
+    plot(xa_low_flight_angle(:,4),xa_low_flight_angle(:,3),'r',...
+        xa_high_flight_angle(:,4),xa_high_flight_angle(:,3),'g',...
+        xa_nom_flight_angle(:,4),xa_nom_flight_angle(:,3),'k');
+    xlabel('Range, m'), ylabel('Height, m'), grid
+    title("Initial Flight Path Angle Variations");
