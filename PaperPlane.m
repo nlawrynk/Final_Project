@@ -176,3 +176,5 @@
     legend([plots_handles(1), plots_handles(end)], ...
         {'Random Trajectories','Average Trajectory'});
     
+    %% First Time Derivatives of Average Trajectory
+    
