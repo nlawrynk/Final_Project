@@ -130,6 +130,11 @@
     xlabel('Range, m'), ylabel('Height, m'), grid
     title('100 Random Parameter Variations')
 
+    time_cat = [];
+    range_cat = [];
+    height_cat = [];
+    plots_handles = [];
+
     for i = 1:100
 
         random_velocity = init_velo_range(1) + (init_velo_range(2) - ...
@@ -143,11 +148,31 @@
         [ta_random, xa_random] = ode23('EqMotion', tspan_random, ...
                                         xo_random);
 
-        plot(xa_random(:,4), xa_random(:,3), 'Color', [0.8500 0.3250 ...
-                                                              0.0980]);
+        h = plot(xa_random(:,4), xa_random(:,3), 'Color', [0.8500 0.3250...
+             0.0980]);
    
+        plots_handles = [plots_handles, h];
+        % Create arrays for average trajectory calculation
+
+        time_cat = [time_cat; ta_random];
+        range_cat = [range_cat; xa_random(:,4)];
+        height_cat = [height_cat; xa_random(:,3)];
+
     end
 
     %% Average Trajectory and Polynomial Curve Fitting
-    
+
+    degree = 7;
+    pfit_range = polyfit(time_cat, range_cat, degree);
+    pfit_height = polyfit(time_cat, height_cat, degree);
+
+    smoothed_time = linspace(min(time_cat), max(time_cat), 1000);
+    pvalue_range = polyval(pfit_range, smoothed_time);
+    pvalue_height = polyval(pfit_height, smoothed_time);
+
+    h_avg = plot(pvalue_range, pvalue_height, 'k');
+    plots_handles = [plots_handles, h_avg];
+
+    legend([plots_handles(1), plots_handles(end)], ...
+        {'Random Trajectories','Average Trajectory'});
     
