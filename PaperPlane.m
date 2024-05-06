@@ -177,4 +177,22 @@
         {'Random Trajectories','Average Trajectory'});
     
     %% First Time Derivatives of Average Trajectory
+
+    dh_dt = diff(pvalue_height) ./ diff(smoothed_time);
+    dr_dt = diff(pvalue_range) ./ diff(smoothed_time);
+
+    figure;
+    subplot(2,1,1);
+    plot(smoothed_time(1:end-1), dh_dt, 'LineWidth', 1);
+    xlabel('Time (s)');
+    ylabel('d(height)/d(time)');
+    title('First Time Derivative of Height');
+
+    subplot(2,1,2);
+    plot(smoothed_time(1:end-1), dr_dt, 'LineWidth', 1);
+    xlabel('Time (s)');
+    ylabel('d(range)/d(time)');
+    title('First Time Derivative of Range');
+
+    sgtitle('First Time Derivatives');
     
