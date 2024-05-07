@@ -4,9 +4,9 @@
   - By: Nicholas Lawrynk
 
   ## Summary of Findings
-  	                                low	  high	nominal
-           Initial Velocity (m/s):	 2	   7.5	  3.55
-  Initial Flight Path Angle (rad): -0.5	   0.4	 -0.18
+                                      low	  high	nominal
+    Initial Velocity (m/s):	           2	   7.5	  3.55
+    Initial Flight Path Angle (rad): -0.5	   0.4	 -0.18
 
   This study accomplished in showing how variations in initial velocity and initial flight path angle change how high and how far
   a paper plane can fly.  This study also accomplished finding the average trajectory of the paper plane and finding the first-time derivatives
